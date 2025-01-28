@@ -1,35 +1,63 @@
-import { Poppins } from "next/font/google";
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { LoginButton } from "@/components/auth/login-button";
-
-const font = Poppins({
-  subsets: ["latin"],
-  weight: ["600"]
-})
+import { Suspense } from 'react';
+import StockSearch from '@/components/stock/StockSearch';
+import StockChart from '@/components/stock/StockChart';
+import AlertSettings from '@/components/stock/AlertSettings';
+import WatchList from '@/components/stock/WatchList';
 
 export default function Home() {
   return (
-    <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
-      <div className="space-y-6 text-center">
-        <h1 className={cn(
-          "text-6xl font-semibold text-white drop-shadow-md",
-          font.className,
-        )}>
-          🔐 Auth
-        </h1>
-        <p className="text-white text-lg">
-          A simple authentication service
-        </p>
-        <div>
-          <LoginButton  asChild>
-            <Button variant="secondary" size="lg">
-              Sign in
-            </Button>
-          </LoginButton>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-0">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Stock Analysis Dashboard</h1>
+            <p className="mt-2 text-sm text-gray-600">
+              Search for stocks, analyze trends, and set up price alerts
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="lg:col-span-1">
+              <div className="bg-white overflow-hidden shadow-sm rounded-lg">
+                <div className="p-6">
+                  <h2 className="text-xl font-semibold mb-4">Watchlist</h2>
+                  <Suspense fallback={<div>Loading watchlist...</div>}>
+                    <WatchList />
+                  </Suspense>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3">
+              <div className="grid grid-cols-1 gap-6">
+                <div className="bg-white overflow-hidden shadow-sm rounded-lg">
+                  <div className="p-6">
+                    <Suspense fallback={<div>Loading search...</div>}>
+                      <StockSearch />
+                    </Suspense>
+                  </div>
+                </div>
+
+                <div className="bg-white overflow-hidden shadow-sm rounded-lg">
+                  <div className="p-6">
+                    <Suspense fallback={<div>Loading chart...</div>}>
+                      <StockChart />
+                    </Suspense>
+                  </div>
+                </div>
+
+                <div className="bg-white overflow-hidden shadow-sm rounded-lg">
+                  <div className="p-6">
+                    <Suspense fallback={<div>Loading alert settings...</div>}>
+                      <AlertSettings />
+                    </Suspense>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </main>
-  )
+    </div>
+  );
 }
